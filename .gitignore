@@ -1,0 +1,10 @@
+# RIDER
+.idea
+Testify-CSharp-Example.sln.DotSettings.user
+
+# Debug / Obj
+Testify-CSharp-Example/obj
+Testify-CSharp-Example/bin
+# Test Debug / Obj
+Testify-CSharp-Example.Tests/obj
+Testify-CSharp-Example.Tests/bin
