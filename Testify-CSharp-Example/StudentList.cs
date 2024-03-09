@@ -5,72 +5,77 @@ public class StudentList
     // Variables
     private List<Student> Students { get; set; }
     // Methods
-    private Student GetStudentInfo()
+    private Student GetStudentInfo(TextReader reader, TextWriter writer)
     {
-        Console.WriteLine("Enter the student's name: ");
-        string name = Console.ReadLine() ?? String.Empty;
+        writer.WriteLine("Enter the student's name: ");
+        string name = (reader.ReadLine()?? String.Empty).Trim();
         
-        Console.WriteLine("Enter the student's email: ");
-        string email = Console.ReadLine() ?? String.Empty;
+        writer.WriteLine("Enter the student's email: ");
+        string email = (reader.ReadLine() ?? String.Empty).Trim();
         
-        Console.WriteLine("Enter the student's grade level: ");
-        string gradeLevel = Console.ReadLine() ?? String.Empty;
+        writer.WriteLine("Enter the student's grade level: ");
+        string gradeLevel = (reader.ReadLine() ?? String.Empty).Trim();
         
-        Console.WriteLine("Enter the student's major: ");
-        string major = Console.ReadLine() ?? String.Empty;
+        writer.WriteLine("Enter the student's major: ");
+        string major = (reader.ReadLine() ?? String.Empty).Trim();
         
-        Console.WriteLine("Enter the student's age: ");
+        writer.WriteLine("Enter the student's age: ");
         int age = 0;
         try
         {
-            age = int.Parse(Console.ReadLine() ?? "0");
+            age = int.Parse(reader.ReadLine() ?? "0");
         }
         catch (FormatException)
         {
-            Console.WriteLine("Error parsing student's age.");
+            writer.WriteLine("Error parsing student's age.");
         }
         
-        Console.WriteLine("Enter the student's ID: ");
+        writer.WriteLine("Enter the student's ID: ");
         int id = 0;
         try
         {
-            id = int.Parse(Console.ReadLine() ?? "0");
+            id = int.Parse(reader.ReadLine() ?? "0");
         }
         catch (FormatException)
         {
-            Console.WriteLine("Error parsing student's ID");
+            writer.WriteLine("Error parsing student's ID");
         }
 
         return new Student(name, email, gradeLevel, major, age, id);
     }
 
-    public void AddStudent()
+    public void AddStudent(TextReader reader, TextWriter writer)
     {
-        Student student = GetStudentInfo();
+        Student student = GetStudentInfo(reader, writer);
 
-        if (Students.Contains(student))
+        foreach (var present in Students)
         {
-            Console.WriteLine("The student is already present in the list.");
+            if (present.Id == student.Id)
+            {
+                writer.WriteLine("The student is already present in the list.");
+                return;
+            }
         }
-        else
-        {
-            Students.Add(student);
-            Console.WriteLine("The student has been added to the list.");
-        }
+        
+        Students.Add(student);
+        writer.WriteLine("The student has been added to the list.");
     }
 
-    public void RemoveStudent()
+    public void RemoveStudent(TextReader reader, TextWriter writer)
     {
-        Student student = GetStudentInfo();
-        if (!Students.Contains(student))
+        Student student = GetStudentInfo(reader, writer);
+
+        foreach (var present in Students)
         {
-            Students.Remove(student);
-            Console.WriteLine("Student has been removed from the list.");
+            if (present.Id == student.Id)
+            {
+                Students.Remove(student);
+                writer.WriteLine("The student has been removed from the list.");
+                return;
+            }
         }
-        else
-        {
-            Console.WriteLine("The student is not in the list.");
-        }
+        
+        writer.WriteLine("The student is not in the list.");
     }
 
     public void Print()

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IO;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Testify_CSharp_Example;
 
 namespace Testify_CSharp_Example.Tests;
 
@@ -13,6 +13,17 @@ public class ProgramTest
     [TestMethod]
     public void TestMainExit()
     {
-        Assert.IsTrue(true);
+        // Arrange
+        const string input = "4";
+        const string expected = "Goodbye!\n";
+        TextReader reader = new StringReader(input);
+        TextWriter writer = new StringWriter();
+        
+        // Act
+        Program.Start(reader, writer);
+        var actual = writer.ToString() ?? String.Empty;
+        
+        // Assert
+        Assert.IsTrue(actual.Contains(expected));
     }
 }
